@@ -103,7 +103,7 @@ public class ModelAndView {
 	public ModelAndView(String viewName, @Nullable Map<String, ?> model) {
 		this.view = viewName;
 		if (model != null) {
-			getModelMap().addAllAttributes(model);
+			getModelMap().addAllAttributes(model); //getModelMap寫在247行左右，會自動建立一個Model object
 		}
 	}
 
@@ -165,7 +165,7 @@ public class ModelAndView {
 	 */
 	public ModelAndView(String viewName, String modelName, Object modelObject) {
 		this.view = viewName;
-		addObject(modelName, modelObject);
+		addObject(modelName, modelObject); ////addObject會直接return一個ModelAvdView class
 	}
 
 	/**

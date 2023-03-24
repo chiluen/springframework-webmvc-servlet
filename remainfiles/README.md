@@ -1,0 +1,2 @@
+## ModelAndView.java
+ModelAndView提供一個容器，可以同時包含Model以及View，且這個檔案可由View or Model去Construct，並且還提供修改Model的method等等。之所以要把Model與View綁在通一個Class是因為controller可以同時return Model與View
