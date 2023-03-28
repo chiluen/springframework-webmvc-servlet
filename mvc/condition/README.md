@@ -10,6 +10,7 @@ Overview: The package contains several classes for representing request conditio
         - 由 `ConsumesRequestCondition.java` 繼承 `AbstractRequestCondition.java`
         - 由 `ProducesRequestCondition.java` 繼承 `AbstractRequestCondition.java`
 
+### Detailed explanation of .java
 - `RequestCondition.java` (*interface*) *介面(Interface)主要表示抽象的行為，不能初始化屬性和方法，當類別實踐(implement)介面時就可以具體化行為了。*
     - represents a mapping between a request path, method, and other conditions, and a controller method that should handle requests that match these criteria. This is the key class in the MVC request mapping infrastructure, and is used extensively throughout the Spring Web MVC framework.
         - Request conditions are represented by instances of classes in this package, such as `ConsumesRequestCondition`, `HeadersRequestCondition`, `ParamsRequestCondition`, etc. These conditions can be combined with each other to create more complex conditions using the `combine()` method.
