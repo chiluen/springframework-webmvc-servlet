@@ -16,7 +16,7 @@ The package are used to handle different aspects of incoming HTTP requests (e.g.
 
 - **Request condition classes**:
     - 功能：to provide a modular and extensible framework for handling different types of requests in Spring MVC. Each request condition class is responsible for evaluating a specific condition related to the incoming request.
-    - 包含的 class 名稱：（他們全部都繼承自 `AbstractRequestCondition` class）
+    - 包含的 class 名稱：（他們全部主要都是要做到 parsing 跟 matching 的功能，接著找到對應的 controller method；他們都繼承自 AbstractRequestCondition class）
         - `CompositeRequestCondition`: combines multiple request conditions into one composite condition.
         - `ConsumesRequestCondition`: handles requests based on the media type that the request can consume.
         - `ProducesRequestCondition`: handles requests based on the media type that the request can produce.
