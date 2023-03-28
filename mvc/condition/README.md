@@ -1,7 +1,7 @@
 (1495 LoC)
 
 ### Overview
-The package contains several classes for representing request conditions and expressions, as well as some helper classes for managing and combining these conditions.
+The package are used to handle different types of incoming HTTP requests (e.g., HTTP method, media types, request parameters, headers, and path patterns) based on various conditions. The goal is to determine if the incoming request matches the conditions configured in the Spring MVC framework and thus should be handled by the corresponding controller method.
 
 ### Hierarchical structure（父子關係）
 
@@ -10,6 +10,21 @@ The package contains several classes for representing request conditions and exp
         - 由 `CompositeRequestCondition.java` 繼承 `AbstractRequestCondition.java`
         - 由 `ConsumesRequestCondition.java` 繼承 `AbstractRequestCondition.java`
         - 由 `ProducesRequestCondition.java` 繼承 `AbstractRequestCondition.java`
+
+
+### Class 分類
+
+- **Request condition classes**:
+    - 功能：to provide a modular and extensible framework for handling different types of requests in Spring MVC. Each request condition class is responsible for evaluating a specific condition related to the incoming request.
+    - 包含的 class 名稱：（他們全部都繼承自 `AbstractRequestCondition` class）
+        - `CompositeRequestCondition`: combines multiple request conditions into one composite condition.
+        - `ConsumesRequestCondition`: handles requests based on the media type that the request can consume.
+        - `ProducesRequestCondition`: handles requests based on the media type that the request can produce.
+        - `RequestMethodsRequestCondition`: handles requests based on HTTP methods such as GET, POST, PUT, DELETE, etc.
+        - `ParamasRequestCondition`: handles requests based on URL parameters.
+        - `HeadersRequestCondition`: handles requests based on headers in the HTTP request.
+        - `PatternsRequestCondition`: checks if the request matches any of the defined patterns.
+        - `PathRequestCondition`: checks if the request's path matches a given pattern or path pattern.
 
 ### Detailed explanation of .java
 - `RequestCondition.java` (*interface*) *介面(Interface)主要表示抽象的行為，不能初始化屬性和方法，當類別實踐(implement)介面時就可以具體化行為了。*
