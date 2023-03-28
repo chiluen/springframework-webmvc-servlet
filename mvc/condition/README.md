@@ -2,7 +2,7 @@
 
 Overview: The package contains several classes for representing request conditions and expressions, as well as some helper classes for managing and combining these conditions.
 
-### 父子關係
+### Hierarchical structure（父子關係）
 
 - `RequestCondition.java` 是起始（介面）
     - 由 `AbstractRequestCondition.java` 實踐（是 `RequestCondition.java` 的 base class）
