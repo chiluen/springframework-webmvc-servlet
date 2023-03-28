@@ -1,7 +1,7 @@
 (1495 LoC)
 
 ### Overview
-The package are used to handle different types of incoming HTTP requests (e.g., HTTP method, media types, request parameters, headers, and path patterns) based on various conditions. The goal is to determine if the incoming request matches the conditions configured in the Spring MVC framework and thus should be handled by the corresponding controller method.
+The package are used to handle different aspects of incoming HTTP requests (e.g., HTTP method, media types, request parameters, headers, and path patterns) based on various conditions. The goal is to determine if the incoming request matches the conditions configured in the Spring MVC framework and thus should be handled by the corresponding controller method.
 
 ### Hierarchical structure（父子關係）
 
