@@ -58,8 +58,8 @@
     before being written to the response. If disabled, the output will be written as-is, without any HTML 
     escaping.
 ## HtmlEscapeTag
-    `<spring:htmlEscape>`
+    ```<spring:htmlEscape>```
 ## EscapeBodyTag
-    `<spring:escapeBody>` is used to escape HTML characters in the body of an HTML document. This tag is 
+    ```<spring:escapeBody>``` is used to escape HTML characters in the body of an HTML document. This tag is 
     typically used to ensure that user-supplied content, such as form input or comments, is properly 
     sanitized and does not contain any malicious scripts or code that could harm the system or other users.
