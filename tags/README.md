@@ -34,6 +34,12 @@
     Spring provides a set of custom JSP tags that can be used to access Spring-specific features from 
     within a JSP page.
 
+| --- | --- |
+|     |     |
+| SKIP_BODY | EVAL_BODY_INCLUDE|
+| It is an optional returned value but this value must be returned by doStartTag() when you want to skip the body evaluation that is it must be returned when the TagLibraryDescriptor file contains the element empty, the value "empty" shows that there will always be an empty action.| It is an optional returned value but this value must be returned by the doStartTag() when you want to evaluate the body.|
+
+
 ## RequestContextAwareTag
     This tag is an abstract class which provides access to the current RequestContext object, which 
     represents the current request being processed by the application. The RequestContext object contains 
@@ -72,3 +78,24 @@
     is used to escape HTML characters in the body of an HTML document. This tag is 
     typically used to ensure that user-supplied content, such as form input or comments, is properly 
     sanitized and does not contain any malicious scripts or code that could harm the system or other users.
+
+## EvalTag
+    ```
+    <c:set>
+    <c:out>
+    ```
+    It allows you to evaluate an expression and store its result in a variable. The tag evaluates the 
+    expression at runtime and the result can be used in subsequent process.
+
+# ArgumentAware
+
+# ArgumentTag
+
+# ParamAware
+
+# ParamTag
+    ```
+    <spring:param>
+    ```
+
+# Param
