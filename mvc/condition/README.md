@@ -1,5 +1,18 @@
 (1495 LoC)
 
+## Overview
+
+The package are used to handle different aspects of incoming **HTTP requests** (e.g., HTTP method, media types, request parameters, headers, and path patterns) based on various **conditions**. The goal is to determine if the incoming request matches the conditions configured in the Spring MVC framework and thus should be handled by the corresponding controller method.
+
+- 如何將請求映射到對應的控制器方法中是 Spring MVC 框架最重要的任務之一，這項任務由 `@RequestMapping` 負責
+- Dispatcher Servlet 接獲請求後，就會透過控制器上 `@RequestMapping` 提供的映射訊息確定請求所對應的處理方法
+- 將請求映射到控制器處理方法的工作包含一系列的映射規則，這些規則則是根據請求中的各種訊息制定的，具體包括請求 URL、請求參數、請求方法、請求頭這四個方面的訊息項
+
+
+## Spring MVC 概述與大致流程（condition package 位在 HTTP 請求處理階段）
+
+Spring MVC 框架圍繞著 `DispatcherServlet` 這個前端 Servlet 展開，它是 Spring MVC 的核心，負責截獲請求並將其分派給相應的 handler 處理，協調和組織不同組建以完成請求並返回響應的工作。
+
 > 在瀏覽器-伺服器的互動過程中，Spring MVC 起著「郵局」的作用。它一方面會從瀏覽器接收各種各樣的「來信」（HTTP 請求），並把不同的請求分發給對應的服務層進行業務處理；另一方面會傳送「回信」（HTTP 響應），將伺服器處理後的結果迴應給瀏覽器。
 > 
 
@@ -9,15 +22,33 @@
 - 接收請求資料：使用`@RequestParam`等註解接收不同型別的請求資料。
 - 傳送響應資料：使用`@ResponseBody`等註解傳送不同型別的響應資料。
 
-## Overview
+而 condition package 的角色大概是對應到「**指定分發地址**」
 
-The package are used to handle different aspects of incoming **HTTP requests** (e.g., HTTP method, media types, request parameters, headers, and path patterns) based on various **conditions**. The goal is to determine if the incoming request matches the conditions configured in the Spring MVC framework and thus should be handled by the corresponding controller method.
+當一個請求發出來時，首先由 `DispatcherServlet` 接收，根據請求的訊息（包括 URL、HTTP 方法、請求 header、請求參數等）及 `HandlerMapping` 的配置找到處理請求的 handler。
 
-- condition package 的角色大概是對應到「**指定分發地址**」
-- 如何將請求映射到對應的控制器方法中是 Spring MVC 框架最重要的任務之一，這項任務由 `@RequestMapping` 負責
-- Dispatcher Servlet 接獲請求後，就會透過控制器上 `@RequestMapping` 提供的映射訊息確定請求所對應的處理方法
-- 將請求映射到控制器處理方法的工作包含一系列的映射規則，這些規則則是根據請求中的各種訊息制定的，具體包括請求 URL、請求參數、請求方法、請求頭這四個方面的訊息項
-
+- `HandlerMapping` 是一個 interface，定義一些策略以把 HTTP 請求 map 到 handler，它的其中一個具體實踐是 `RequestMappingHandlerMapping`。
+- `RequestMappingHandlerMapping` 負責決定哪一個 handler method 適合 handle 這個請求，它主要針對控制器類（帶有註解 `@Controller`）中類級別或者方法級別的註解 `@RequestMapping` 創建 `RequestMappingInfo` 並管理。
+    - 在 `RequestMappingHandlerMapping` 的 `match()` 中，會間接使用 `RequestMappingInfo` 的 `getMatchingCondition()`，透過`RequestMappingInfo` 自身保存的各個 class 的條件訊息對當前請求進行匹配，如果其中有一個條件不滿足，直接 return null，不會加入 match 集合中。
+    - `RequestMappingInfo` 的 constructor（可從中看出它與 condition folder 下的那些 XXXcondition class 的關係）
+        
+        ```java
+        public RequestMappingInfo(@Nullable String name, @Nullable PatternsRequestCondition patterns,
+        			@Nullable RequestMethodsRequestCondition methods, @Nullable ParamsRequestCondition params,
+        			@Nullable HeadersRequestCondition headers, @Nullable ConsumesRequestCondition consumes,
+        			@Nullable ProducesRequestCondition produces, @Nullable RequestCondition<?> custom) {
+        
+        		this(name, null,
+        				(patterns != null ? patterns : EMPTY_PATTERNS),
+        				(methods != null ? methods : EMPTY_REQUEST_METHODS),
+        				(params != null ? params : EMPTY_PARAMS),
+        				(headers != null ? headers : EMPTY_HEADERS),
+        				(consumes != null ? consumes : EMPTY_CONSUMES),
+        				(produces != null ? produces : EMPTY_PRODUCES),
+        				(custom != null ? new RequestConditionHolder(custom) : EMPTY_CUSTOM),
+        				new BuilderConfiguration());
+        	}
+        ```
+        
 
 ## Hierarchical structure（父子關係）
 
