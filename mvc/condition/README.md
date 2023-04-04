@@ -19,7 +19,7 @@ The package are used to handle different aspects of incoming **HTTP requests** (
 - 將請求映射到控制器處理方法的工作包含一系列的映射規則，這些規則則是根據請求中的各種訊息制定的，具體包括請求 URL、請求參數、請求方法、請求頭這四個方面的訊息項
 
 
-### Hierarchical structure（父子關係）
+## Hierarchical structure（父子關係）
 
 - `RequestCondition`（介面）
     
@@ -36,7 +36,7 @@ The package are used to handle different aspects of incoming **HTTP requests** (
     - 框架還提供了另一個實現類 `RequestConditionHolder`（繼承自 `AbstractRequestCondition`），是一個匹配條件持有器，用於持有某個 `RequestCondition` 對象。如果我們想持有一個 RequestCondition 對象，但事先不知道它的類型，在這種情況下這種工具就很有用
 
 
-### Class 分類
+## Class 分類
 
 - **Request condition classes**:
     - 功能：to provide a modular and extensible framework for handling different types of requests in Spring MVC. Each request condition class is responsible for evaluating a specific condition related to the incoming request.
@@ -83,7 +83,7 @@ Content Type 中有個屬性 `media type`，是讓你填寫所送資料類型，
 ****[Spring MVC 概念模型 : 接口 RequestCondition](https://blog.csdn.net/andy_zhang2007/article/details/88913776)****
 
 
-### Detailed explanation of .java
+## Detailed explanation of .java
 - `RequestCondition.java` (*interface*) *介面(Interface)主要表示抽象的行為，不能初始化屬性和方法，當類別實踐(implement)介面時就可以具體化行為了。*
     - represents a mapping between a request path, method, and other conditions, and a controller method that should handle requests that match these criteria. This is the key class in the MVC request mapping infrastructure, and is used extensively throughout the Spring Web MVC framework.
         - Request conditions are represented by instances of classes in this package, such as `ConsumesRequestCondition`, `HeadersRequestCondition`, `ParamsRequestCondition`, etc. These conditions can be combined with each other to create more complex conditions using the `combine()` method.
