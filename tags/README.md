@@ -38,7 +38,7 @@ within a JSP page.
 
 | SKIP_BODY        | EVAL_BODY_INCLUDE | EVAL_BODY_BUFFERED | SKIP_PAGE | EVAL_PAGE |
 | ------------- | ------------- | ----- | ----- | -----|
-| It is an optional returned value but this value must be returned by doStartTag() when you want to skip the body evaluation that is it must be returned when the TagLibraryDescriptor file contains the element empty, the value "empty" shows that there will always be an empty action.  | It is an optional returned value but this value must be returned by the doStartTag() when you want to evaluate the body. | $1600 | | |
+| The body of the tag should be skipped and not evaluated.| The body of the tag should be evaluated.| The body of the tag should be buffered and evaluated.|The remainder of the JSP page should be skipped and not evaluated.|The remainder of the JSP page should be evaluated.|
 
 
 ## RequestContextAwareTag
