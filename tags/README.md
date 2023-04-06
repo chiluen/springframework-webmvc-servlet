@@ -94,3 +94,9 @@ expression at runtime and the result can be used in subsequent process.
 `<spring:param>`
 
 # Param
+
+# MessageTag
+`<spring:message>`
+
+# ThemeTag
+`<spring:theme>`
