@@ -31,61 +31,64 @@
     9. TagIdGenerator.java
 
 ## This Folder
-    Spring provides a set of custom JSP tags that can be used to access Spring-specific features from 
-    within a JSP page.
+Spring provides a set of custom JSP tags that can be used to access Spring-specific features from 
+within a JSP page.
+
+## JSP
 
 | --- | --- |
-|     |     |
 | SKIP_BODY | EVAL_BODY_INCLUDE|
 | It is an optional returned value but this value must be returned by doStartTag() when you want to skip the body evaluation that is it must be returned when the TagLibraryDescriptor file contains the element empty, the value "empty" shows that there will always be an empty action.| It is an optional returned value but this value must be returned by the doStartTag() when you want to evaluate the body.|
 
 
 ## RequestContextAwareTag
-    This tag is an abstract class which provides access to the current RequestContext object, which 
-    represents the current request being processed by the application. The RequestContext object contains 
-    information about the request, such as the request parameters, the request headers, and the session 
-    attributes. The RequestContext object is also used by Spring to resolve message codes for 
-    internationalization and localization purposes.
+This tag is an abstract class which provides access to the current RequestContext object, which 
+represents the current request being processed by the application. The RequestContext object contains 
+information about the request, such as the request parameters, the request headers, and the session 
+attributes. The RequestContext object is also used by Spring to resolve message codes for 
+internationalization and localization purposes.
+
+## XSS attack
 
 ## HtmlEscapingAwareTag
-    HtmlEscapingAwareTag is another interface in the Spring Framework's webmvc package that allows tags to
-     be aware of HTML escaping. It extends the BodyTag interface and adds a single method called 
-     setHtmlEscape, which takes a boolean value that indicates whether HTML escaping should be enabled or 
-     disabled for the tag.
+HtmlEscapingAwareTag is another interface in the Spring Framework's webmvc package that allows tags to
+be aware of HTML escaping. It extends the BodyTag interface and adds a single method called 
+setHtmlEscape, which takes a boolean value that indicates whether HTML escaping should be enabled or 
+disabled for the tag.
 
-    HTML escaping is an important feature of web applications that helps prevent cross-site scripting (XSS) 
-    attacks. When HTML is displayed on a web page, any characters that have special meaning in HTML (such 
-    as < and >) must be properly encoded to prevent them from being interpreted as HTML tags. This is 
-    typically done using the HTML entity encoding syntax, where special characters are replaced with their 
-    corresponding entity references (such as < for < and > for >).
+HTML escaping is an important feature of web applications that helps prevent cross-site scripting (XSS) 
+attacks. When HTML is displayed on a web page, any characters that have special meaning in HTML (such 
+as < and >) must be properly encoded to prevent them from being interpreted as HTML tags. This is 
+typically done using the HTML entity encoding syntax, where special characters are replaced with their 
+corresponding entity references (such as < for < and > for >).
 
-    The setHtmlEscape method allows a tag to control whether its output should be HTML-escaped or not. If 
-    enabled, any output produced by the tag will be automatically HTML-escaped by the Spring Framework 
-    before being written to the response. If disabled, the output will be written as-is, without any HTML 
-    escaping.
+The setHtmlEscape method allows a tag to control whether its output should be HTML-escaped or not. If 
+enabled, any output produced by the tag will be automatically HTML-escaped by the Spring Framework 
+before being written to the response. If disabled, the output will be written as-is, without any HTML 
+escaping.
 ## HtmlEscapeTag
     
-    ```
-    <spring:htmlEscape>
-    ```
+```
+<spring:htmlEscape>
+```
     
 ## EscapeBodyTag
     
-    ```
-    <spring:escapeBody>
-    ``` 
-    
-    is used to escape HTML characters in the body of an HTML document. This tag is 
-    typically used to ensure that user-supplied content, such as form input or comments, is properly 
-    sanitized and does not contain any malicious scripts or code that could harm the system or other users.
+```
+<spring:escapeBody>
+``` 
+
+is used to escape HTML characters in the body of an HTML document. This tag is 
+typically used to ensure that user-supplied content, such as form input or comments, is properly 
+sanitized and does not contain any malicious scripts or code that could harm the system or other users.
 
 ## EvalTag
-    ```
-    <c:set>
-    <c:out>
-    ```
-    It allows you to evaluate an expression and store its result in a variable. The tag evaluates the 
-    expression at runtime and the result can be used in subsequent process.
+```
+<c:set>
+<c:out>
+```
+It allows you to evaluate an expression and store its result in a variable. The tag evaluates the 
+expression at runtime and the result can be used in subsequent process.
 
 # ArgumentAware
 
@@ -94,8 +97,8 @@
 # ParamAware
 
 # ParamTag
-    ```
-    <spring:param>
-    ```
+```
+<spring:param>
+```
 
 # Param
