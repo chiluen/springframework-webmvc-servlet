@@ -36,9 +36,11 @@ within a JSP page.
 
 ## JSP
 
-| --- | --- |
-| SKIP_BODY | EVAL_BODY_INCLUDE|
-| It is an optional returned value but this value must be returned by doStartTag() when you want to skip the body evaluation that is it must be returned when the TagLibraryDescriptor file contains the element empty, the value "empty" shows that there will always be an empty action.| It is an optional returned value but this value must be returned by the doStartTag() when you want to evaluate the body.|
+| SKIP_BODY        | EVAL_BODY_INCLUDE | Cool  |
+| ------------- |:-------------:| -----:|
+| It is an optional returned value but this value must be returned by doStartTag() when you want to skip the body evaluation that is it must be returned when the TagLibraryDescriptor file contains the element empty, the value "empty" shows that there will always be an empty action.  | It is an optional returned value but this value must be returned by the doStartTag() when you want to evaluate the body. | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
 
 
 ## RequestContextAwareTag
