@@ -36,11 +36,9 @@ within a JSP page.
 
 ## JSP
 
-| SKIP_BODY        | EVAL_BODY_INCLUDE | Cool  |
-| ------------- |:-------------:| -----:|
-| It is an optional returned value but this value must be returned by doStartTag() when you want to skip the body evaluation that is it must be returned when the TagLibraryDescriptor file contains the element empty, the value "empty" shows that there will always be an empty action.  | It is an optional returned value but this value must be returned by the doStartTag() when you want to evaluate the body. | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+| SKIP_BODY        | EVAL_BODY_INCLUDE | EVAL_BODY_BUFFERED | SKIP_PAGE | EVAL_PAGE |
+| ------------- | ------------- | ----- | ----- | -----|
+| It is an optional returned value but this value must be returned by doStartTag() when you want to skip the body evaluation that is it must be returned when the TagLibraryDescriptor file contains the element empty, the value "empty" shows that there will always be an empty action.  | It is an optional returned value but this value must be returned by the doStartTag() when you want to evaluate the body. | $1600 | | |
 
 
 ## RequestContextAwareTag
@@ -70,25 +68,19 @@ before being written to the response. If disabled, the output will be written as
 escaping.
 ## HtmlEscapeTag
     
-```
-<spring:htmlEscape>
-```
+`<spring:htmlEscape>`
     
 ## EscapeBodyTag
     
-```
-<spring:escapeBody>
-``` 
+`<spring:escapeBody>` 
 
 is used to escape HTML characters in the body of an HTML document. This tag is 
 typically used to ensure that user-supplied content, such as form input or comments, is properly 
 sanitized and does not contain any malicious scripts or code that could harm the system or other users.
 
 ## EvalTag
-```
-<c:set>
-<c:out>
-```
+`<c:set>`
+`<c:out>`
 It allows you to evaluate an expression and store its result in a variable. The tag evaluates the 
 expression at runtime and the result can be used in subsequent process.
 
@@ -99,8 +91,6 @@ expression at runtime and the result can be used in subsequent process.
 # ParamAware
 
 # ParamTag
-```
-<spring:param>
-```
+`<spring:param>`
 
 # Param
