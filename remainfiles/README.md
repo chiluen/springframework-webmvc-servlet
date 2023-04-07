@@ -40,3 +40,36 @@ ref: https://blog.csdn.net/securitit/article/details/111189938
 ## HandlerMapping.java
 為一個interface，根據request去尋找對應的handler，重要的function:
 - HandlerExecutionChain getHandler(HttpServletRequest request)：根據request，回傳一個handler執行順序（此執行順序包含handlerinterceptor）
+
+## HttpServletBean.java
+這一個檔案被FrameworkServlet.java繼承，而DispatcherServlet.java繼承自FrameworkServlet.java
+
+Servlet這個詞代表對client所發出的Request提供Response的一個容器（ref:[link1](https://worktile.com/kb/ask/30170.html), [link2](https://zh.wikipedia.org/zh-tw/Java_Servlet)）
+
+HttpServletBean是abstract class，並且implement EnvironmentCapable和EnvironmentAware，這兩個的作用為設定web環境的properties
+
+- setEnvironment/getEnvironment: 實現它所implement的兩個interface，目的為設定enviroment
+- init: 初始化Servlet，若Servlet的Config不為空，則根據Config的properties設定Beanwrapper等
+- initBeanWrapper: 可自定義的init method，BeanWrapper本身為JavaBean的延伸概念，其概念為將不同物件封裝到一個物件中
+- ServletConfigPropertyValues: 為一個private的class，用來存放properties，這一個class有在init時被用到
+
+ref: [link](https://zhuanlan.zhihu.com/p/33372365)
+
+## NoHandlerFoundException.java
+在DispatcherServlet找不到request所對應的handler時會有兩個處理方式，第一個為回傳404 not found，第二個則為調用此class(若DispatcherServlet有設定 throw exception的話)
+
+這個class會根據目前的statu以及錯誤的訊息內容（by getBody method）回傳較豐富的資訊給client
+
+## ThemeResolver.java
+為一個interface，根據request resolve對應的theme名字，同時也可以根據request改變theme名字
+
+## LocaleResolver.java
+Locale的意思為區域，由於不同國家區域可能有不同的限制，因此LocaleResolver通過解析client所在的區域並給出對應的View
+
+LocaleResolver為一個interface
+- resolveLocale: 根據client的request判定所在區域
+- setLocale: 判定Locale後，針對Locale給予不同的View
+
+## LocaleContextResolver
+為Interface，extend from LocaleResolver，為LocaleResolver的延伸interface，有更具體的說怎麼判別Locale，例如使用Timezone去辨別Locale
+(ex: TimeZoneAwareLocaleContext)，並且這個interface有具體實現resolveLocale和setLocale(透過Java的default關鍵字)
