@@ -1,5 +1,28 @@
 (1495 LoC)
 
+## 讀 code 順序
+
+- `RequestCondition`（介面）
+    
+    由 `AbstractRequestCondition` 實踐（是 `RequestCondition` 的 base class）
+    
+    - `RequestCondition` 的具體實現都繼承自 `AbstractRequestCondition`，都是針對請求匹配的某一個方面：請求路徑，請求頭部，請求方法，請求参數，可消費`MIME`
+    ，可生成`MIME`等等。包括：
+        - `CompositeRequestCondition`
+        - `ConsumesRequestCondition`
+        - `ProducesRequestCondition`
+        - `RequestMethodsRequestCondition`
+        - `ParamasRequestCondition`
+        - `HeadersRequestCondition`
+        - `PatternsRequestCondition`
+        - `PathRequestCondition`
+    - 框架還提供了另一個實現類 `RequestConditionHolder`（繼承自 `AbstractRequestCondition`），是一個匹配條件持有器，用於持有某個 `RequestCondition` 對象。如果我們想持有一個 RequestCondition 對象，但事先不知道它的類型，在這種情況下這種工具就很有用
+- `NameValueExpression` （介面）
+    - `AbstractNameValueExpression` （實踐）
+- `MediaTypeExpression`（介面）
+    - `AbstractMediaTypeExpression`（實踐）
+
+
 ## Overview
 
 The package are used to handle different aspects of incoming **HTTP requests** (e.g., HTTP method, media types, request parameters, headers, and path patterns) based on various **conditions**. The goal is to determine if the incoming request matches the conditions configured in the Spring MVC framework and thus should be handled by the corresponding controller method.
@@ -48,38 +71,21 @@ Spring MVC 框架圍繞著 `DispatcherServlet` 這個前端 Servlet 展開，它
         				new BuilderConfiguration());
         	}
         ```
-        
-
-## Hierarchical structure（父子關係）
-
-- `RequestCondition`（介面）
-    
-    由 `AbstractRequestCondition` 實踐（是 `RequestCondition` 的 base class）
-    
-    - `RequestCondition` 的具體實現都繼承自 `AbstractRequestCondition`，都是針對請求匹配的某一個方面：請求路徑，請求頭部，請求方法，請求参數，可消費`MIME`
-    ，可生成`MIME`等等。包括：
-        - `CompositeRequestCondition`
-        - `ConsumesRequestCondition`
-        - `ProducesRequestCondition`
-        - `RequestMethodsRequestCondition`
-        - `ParamasRequestCondition`
-        - `HeadersRequestCondition`
-    - 框架還提供了另一個實現類 `RequestConditionHolder`（繼承自 `AbstractRequestCondition`），是一個匹配條件持有器，用於持有某個 `RequestCondition` 對象。如果我們想持有一個 RequestCondition 對象，但事先不知道它的類型，在這種情況下這種工具就很有用
 
 
-## Class 分類
+## Class 分類與功能簡介
 
 - **Request condition classes**:
     - 功能：to provide a modular and extensible framework for handling different types of requests in Spring MVC. Each request condition class is responsible for evaluating a specific condition related to the incoming request.
     - 包含的 class 名稱：（他們全部主要都是要做到 **parsing** 跟 **matching** 的功能，藉此再經由 `@RequestMapping` annotations — on the controller methods — 找到對應的 controller method；他們都繼承自 `AbstractRequestCondition` class）
         - `CompositeRequestCondition`: combines multiple request conditions into one composite condition.
-        - `ConsumesRequestCondition`: handles requests based on the media type that the request can consume.
-        - `ProducesRequestCondition`: handles requests based on the media type that the request can produce.
+        - `ConsumesRequestCondition`: handles requests based on the media type that the handler method can accept or consume a specific type of content (media type) as part of an HTTP request.
+        - `ProducesRequestCondition`: handles requests based on the media type that the handler method can generate a specific type of content (media type) in response to an HTTP request.
         - `RequestMethodsRequestCondition`: handles requests based on HTTP methods such as GET, POST, PUT, DELETE, etc.
         - `ParamasRequestCondition`: handles requests based on URL parameters.
         - `HeadersRequestCondition`: handles requests based on headers in the HTTP request.
-        - `PatternsRequestCondition`: checks if the request matches any of the defined patterns.
-        - `PathRequestCondition`: checks if the request's path matches a given pattern or path pattern.
+        - `PatternsRequestCondition`: match a handler method to a request based on the URL pattern(s) specified in the `@RequestMapping` annotation.
+        - `PathRequestCondition`: match a handler method to a request based on the URI path of the request.
     
     Note: `@RequestMapping` is an annotation used to map HTTP requests to controller methods. You can find it in the `org.springframework.web.bind.annotation` package.
     
@@ -95,23 +101,39 @@ Spring MVC 框架圍繞著 `DispatcherServlet` 這個前端 Servlet 展開，它
 | ConsumesRequestCondition | 可消費 MIME 匹配條件 |
 | ProducesRequestCondition | 可生成 MIME 匹配條件 |
 
-當我們要發 request 時候，我們需要在 header 中設定 Content Type ，告訴對方說「嘿！我送給你的資料是這種類型」，讓對方可以用適合的方式解析處理你所提供的資料。
+**Example**:
 
-Content Type 中有個屬性 `media type`，是讓你填寫所送資料類型，而你必須根據 `MIME` 格式填寫，不可以亂填
+- "`pattern`":
+    - if a handler method has a `@RequestMapping` annotation with a `value` attribute that specifies `/users/{id}`, the `PatternsRequestCondition` will match any request whose URL starts with `/users/` and has a path variable named `id`. The `PatternsRequestCondition` can also handle more complex patterns using wildcards, regex expressions, or custom path matchers.
+- "`request method`":
+    - if a handler method has a `@RequestMapping` annotation with a `method` attribute that specifies `RequestMethod.POST`, the `RequestMethodsRequestCondition` will match only requests that use the `POST` method. The `RequestMethodsRequestCondition` can also handle multiple HTTP methods using comma-separated values or `RequestMethod` enums.
+- "`parameter`":
+    - if a handler method has a `@RequestMapping` annotation with a `params` attribute that specifies `foo=bar`, the `ParamsRequestCondition` will match any request that includes a parameter named `foo` with a value of `bar`. If the request does not include this parameter or has a different value, the `ParamsRequestCondition` will not match the request to the handler method.
+- "`headers`":
+    - if a handler method has a `@RequestMapping` annotation with a `headers` attribute that specifies `Accept=application/json`, the `HeadersRequestCondition` will match only requests that include an `Accept` header with a value of `application/json`. The `HeadersRequestCondition` can also handle multiple headers using logical operators such as AND and OR.
+- "`consume`":
+    - if a handler method consumes `application/json` and `application/xml` content types, and a client sends a request with a `Content-Type` header of `application/json`, the server can use the `ConsumesRequestCondition` to determine that the handler method can consume the requested content type and invoke the appropriate method to handle the request.
+- "`produce`":
+    - if a handler method produces `application/json` and `application/xml` content types, and a client sends a request with an `Accept` header of `application/json`, the server can use the `ProducesRequestCondition` to determine that the handler method can produce the requested content type and generate an appropriate response.
 
-`MIME` 是一種標準，用來表示文件、檔案、各種位元組 ex. image/jpg
+**補充**：
 
-主要類別 ( type )：
-
-- application 適用多數 二進制資料 (binary data) ex. application/pdf
-- audio 適用音訊類資料 ex. audio/mpeg
-- font 適用各類文字型檔案 ex. font/ttf
-- image 適用各種圖片行檔案 ex. image/jpg
-- model 適用各種模型累資料, 3D object ex. model/3mf
-- text 適用各種人類可閱讀之文字資料 ex. text/html
-- video 適用各種影像資料ex. video/mp4
-
-****[Spring MVC 概念模型 : 接口 RequestCondition](https://blog.csdn.net/andy_zhang2007/article/details/88913776)****
+- 當我們要發 request 時候，我們需要在 header 中設定 Content Type ，告訴對方說「嘿！我送給你的資料是這種類型」，讓對方可以用適合的方式解析處理你所提供的資料。Content Type 中有個屬性 `media type`，讓我們填寫所傳送的資料類型，而我們必須根據 `MIME` 格式填寫，不可以亂填。
+- `MIME` 是一種標準，用來表示文件、檔案、各種位元組 ex. image/jpg
+    
+    主要類別 ( type )：
+    
+    - application 適用多數 二進制資料 (binary data) ex. application/pdf
+    - audio 適用音訊類資料 ex. audio/mpeg
+    - font 適用各類文字型檔案 ex. font/ttf
+    - image 適用各種圖片行檔案 ex. image/jpg
+    - model 適用各種模型累資料, 3D object ex. model/3mf
+    - text 適用各種人類可閱讀之文字資料 ex. text/html
+    - video 適用各種影像資料ex. video/mp4
+    
+    ****[Spring MVC 概念模型 : 接口 RequestCondition](https://blog.csdn.net/andy_zhang2007/article/details/88913776)****
+    
+- The `Accept` request HTTP header indicates which content types, expressed as `MIME` types, the client is able to understand.
 
 
 ## Detailed explanation of .java
