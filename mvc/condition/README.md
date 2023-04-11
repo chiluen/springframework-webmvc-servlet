@@ -79,31 +79,46 @@ Spring MVC 框架圍繞著 `DispatcherServlet` 這個前端 Servlet 展開，它
     - 功能：to provide a modular and extensible framework for handling different types of requests in Spring MVC. Each request condition class is responsible for evaluating a specific condition related to the incoming request.
     - 包含的 class 名稱：（他們全部主要都是要做到 **parsing** 跟 **matching** 的功能，藉此再經由 `@RequestMapping` annotations — on the controller methods — 找到對應的 controller method；他們都繼承自 `AbstractRequestCondition` class）
         - `CompositeRequestCondition`: combines multiple request conditions into one composite condition.
+            
+            The main purpose is to **simplify the process of defining complex request mappings** that require multiple conditions to be satisfied before a handler method is invoked. Developers can thus avoid duplicating code and keep their request mappings more concise and maintainable. 
+            
+            It can be particularly useful in scenarios where a handler method needs to be matched against multiple criteria simultaneously.
+            
         - `ConsumesRequestCondition`: handles requests based on the media type that the handler method can accept or consume a specific type of content (media type) as part of an HTTP request.
         - `ProducesRequestCondition`: handles requests based on the media type that the handler method can generate a specific type of content (media type) in response to an HTTP request.
         - `RequestMethodsRequestCondition`: handles requests based on HTTP methods such as GET, POST, PUT, DELETE, etc.
         - `ParamasRequestCondition`: handles requests based on URL parameters.
         - `HeadersRequestCondition`: handles requests based on headers in the HTTP request.
-        - `PatternsRequestCondition`: match a handler method to a request based on the URL pattern(s) specified in the `@RequestMapping` annotation.
-        - `PathRequestCondition`: match a handler method to a request based on the URI path of the request.
+        - `PatternsRequestCondition`: match a handler method to a request based on the “raw” URL pattern(s) specified in the `@RequestMapping` annotation.
+        - `PathPatternsRequestCondition`: match a handler method to a request based on the “parsed representation (separates the path segments from the URI variables)” of URL path of the request.
     
-    Note: `@RequestMapping` is an annotation used to map HTTP requests to controller methods. You can find it in the `org.springframework.web.bind.annotation` package.
+    Note: 
     
-    [https://github.com/spring-projects/spring-framework/tree/main/spring-web/src/main/java/org/springframework/web/bind/annotation](https://github.com/spring-projects/spring-framework/tree/main/spring-web/src/main/java/org/springframework/web/bind/annotation)
+    - `@RequestMapping` is an annotation used to map HTTP requests to controller methods. You can find it in the `org.springframework.web.bind.annotation` package.
+        
+        [https://github.com/spring-projects/spring-framework/tree/main/spring-web/src/main/java/org/springframework/web/bind/annotation](https://github.com/spring-projects/spring-framework/tree/main/spring-web/src/main/java/org/springframework/web/bind/annotation)
+        
+    - URL (Uniform Resource Locator) 是 URI (Uniform Resource Identifier) 的子集，因此可以說 URL 就是一種 URI
+        
+        **URI** 的功能是「**標識網際網路中的資源**（HTML檔案、程式碼、影片、圖片等）」，其中又包含 URN 和 URL**（URN：給名字／URL：給地址）**
+        
+    - In general, `PathPatternsRequestCondition` is preferred over `PatternsRequestCondition` as it provides more fine-grained control over the matching process and is easier to use with advanced path manipulation scenarios. However, `PatternsRequestCondition` may still be useful in some situations where a simpler matching strategy is sufficient.
     
 
 | 實現類 (class) | 簡介 |
 | --- | --- |
-| PatternsRequestCondition | 路徑匹配條件 |
+| PatternsRequestCondition | 原始路徑匹配條件 |
+| PathPatternsRequestCondition | 解析過的路徑匹配條件 |
 | RequestMethodsRequestCondition | 請求方法匹配條件 |
 | ParamsRequestCondition | 請求參數匹配條件 |
 | HeadersRequestCondition | 頭部信息匹配條件 |
 | ConsumesRequestCondition | 可消費 MIME 匹配條件 |
 | ProducesRequestCondition | 可生成 MIME 匹配條件 |
+| CompositeRequestCondition | combine 上述任何條件 |
 
 **Example**:
 
-- "`pattern`":
+- "`pattern`": 即 URL
     - if a handler method has a `@RequestMapping` annotation with a `value` attribute that specifies `/users/{id}`, the `PatternsRequestCondition` will match any request whose URL starts with `/users/` and has a path variable named `id`. The `PatternsRequestCondition` can also handle more complex patterns using wildcards, regex expressions, or custom path matchers.
 - "`request method`":
     - if a handler method has a `@RequestMapping` annotation with a `method` attribute that specifies `RequestMethod.POST`, the `RequestMethodsRequestCondition` will match only requests that use the `POST` method. The `RequestMethodsRequestCondition` can also handle multiple HTTP methods using comma-separated values or `RequestMethod` enums.
@@ -115,6 +130,18 @@ Spring MVC 框架圍繞著 `DispatcherServlet` 這個前端 Servlet 展開，它
     - if a handler method consumes `application/json` and `application/xml` content types, and a client sends a request with a `Content-Type` header of `application/json`, the server can use the `ConsumesRequestCondition` to determine that the handler method can consume the requested content type and invoke the appropriate method to handle the request.
 - "`produce`":
     - if a handler method produces `application/json` and `application/xml` content types, and a client sends a request with an `Accept` header of `application/json`, the server can use the `ProducesRequestCondition` to determine that the handler method can produce the requested content type and generate an appropriate response.
+- “`composite`”:
+    - if a developer wants to define a request mapping that requires both a specific request method and a specific set of request headers, they can create a composite condition that combines `RequestMethodsRequestCondition` and `HeadersRequestCondition`. This can be achieved using the `CompositeRequestCondition` class as follows:
+        
+        ```java
+        RequestMethodsRequestCondition methods = new RequestMethodsRequestCondition(RequestMethod.GET);
+        HeadersRequestCondition headers = new HeadersRequestCondition("Accept=text/plain");
+        
+        CompositeRequestCondition condition = new CompositeRequestCondition(methods, headers);
+        ```
+        
+        The resulting `condition` object can then be used to define the request mapping and will only match requests that satisfy both the request method and the request header criteria.
+        
 
 **補充**：
 
