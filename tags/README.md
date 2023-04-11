@@ -69,12 +69,13 @@ escaping.
 ## HtmlEscapeTag
     
 `<spring:htmlEscape>`
+Change the default html escape setting in the body.
     
 ## EscapeBodyTag
     
 `<spring:escapeBody>` 
 
-is used to escape HTML characters in the body of an HTML document. This tag is 
+Is used to escape HTML characters in the body of an HTML document. This tag is 
 typically used to ensure that user-supplied content, such as form input or comments, is properly 
 sanitized and does not contain any malicious scripts or code that could harm the system or other users.
 
@@ -84,33 +85,35 @@ sanitized and does not contain any malicious scripts or code that could harm the
 It allows you to evaluate an expression and store its result in a variable. The tag evaluates the 
 expression at runtime and the result can be used in subsequent process.
 
-# ArgumentAware
+## ArgumentAware
 
-# ArgumentTag
+## ArgumentTag
+`<spring:argument>`
 
-# ParamAware
+## ParamAware
 
-# ParamTag
+## ParamTag
 `<spring:param>`
 
-# Param
+## Param
 
-# MessageTag
+## MessageTag
 `<spring:message>`
 
-# ThemeTag
+## ThemeTag
 `<spring:theme>`
 
-# TransformTag
+## TransformTag
 `<spring:transform>`
 
-# UrlTag
+## UrlTag
+`<spring:url>`
 
-# BindErrorsTag
+## BindErrorsTag
 `<spring:hasBindErrors>`
 
-# BindTag
+## BindTag
 `<spring:bind>`
 
-# NestedPathTag
+## NestedPathTag
 `<spring:nestedPath>`
