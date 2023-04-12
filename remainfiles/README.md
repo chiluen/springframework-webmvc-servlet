@@ -73,3 +73,22 @@ LocaleResolver為一個interface
 ## LocaleContextResolver
 為Interface，extend from LocaleResolver，為LocaleResolver的延伸interface，有更具體的說怎麼判別Locale，例如使用Timezone去辨別Locale
 (ex: TimeZoneAwareLocaleContext)，並且這個interface有具體實現resolveLocale和setLocale(透過Java的default關鍵字)
+
+## SmartView.java
+繼承自View.java的interface，相較於View.java多了一個函式判斷，該View是否為redirect過來的
+
+## RequestToViewNameTranslator.java
+為一個interface，作用為根據Http request將其轉換為對應的View的名稱
+
+## FrameworkServlet.java
+為Abstract，extend from HttpServletBean.java
+
+此class重點為Host一個WebApplicationContext，並且依據Client所傳入的request做出對應的處理，底下為FrameworkServlet重要的functions
+- FrameworkServlet(WebApplicationContext): init一個FrameworkServlet
+- service: 處理Client請求的入口
+- processRequest: 真正處理Client請求的method，會透過內部的doService method處理請求
+
+
+接下來要把每個function做解析
+
+ref: [link](https://blog.csdn.net/u012702547/article/details/115108949)
