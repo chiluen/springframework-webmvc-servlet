@@ -89,6 +89,18 @@ LocaleResolver為一個interface
 - processRequest: 真正處理Client請求的method，會透過內部的doService method處理請求
 
 
+底下講解上述三個methods做的事情：
+- FrameworkServlet: init FrameworkServlet的method，有不同種的init方式，主要是透過傳入WebApplicationContext進行init，而這個WebApplication是這個servelet主要host的物件
 接下來要把每個function做解析
+- service: 根據request，丟到processRequest或
+super.service處理，具體的處理方法在FrameworkServlet有實現，例如doGet, doPost, doDelete等等，然而這一些doGet與doPost仍會在method之中將請求丟給processRequest處理，因此無論是super.service或processRequest處理，都會丟到processRequest辨別request的類型並且處理請求
+- processRequest: 此method為FrameworkServlet最重要的method，一共有三個部分。
+    - 第一個部分為對LocaleContext 和 RequestAttributes做處理，其中LocaleContext是獲取request的locale(地區)資訊，而RequestAttributes則是或許該request的不同訊息(如用戶id等)
+    - 第二個部分為doService，會根據不同的httprequest做不同的事情，而其具體的實現在DispatcherServlet
+    - 第三個部分(在finally的區塊)為根據request，發布一個事件，說明Servelet有針對request做處理
 
-ref: [link](https://blog.csdn.net/u012702547/article/details/115108949)
+
+
+ref: 
+- [link1](https://blog.csdn.net/u012702547/article/details/115108949)
+- [link2](https://blog.csdn.net/f641385712/article/details/87982095)
