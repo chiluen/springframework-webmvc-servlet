@@ -99,8 +99,15 @@ super.service處理，具體的處理方法在FrameworkServlet有實現，例如
     - 第二個部分為doService，會根據不同的httprequest做不同的事情，而其具體的實現在DispatcherServlet
     - 第三個部分(在finally的區塊)為根據request，發布一個事件，說明Servelet有針對request做處理
 
-
-
 ref: 
 - [link1](https://blog.csdn.net/u012702547/article/details/115108949)
 - [link2](https://blog.csdn.net/f641385712/article/details/87982095)
+
+## AsyncHandlerInterceptor.java
+為interface，擴展HandlerInterceptor至非同步的應用
+
+## FlashMap.java
+為一個Class。當網頁重定向(redirect)時，通常現有網站的參數(attributes)沒辦法簡單的跟著傳過去（例如User ID等等），常見的做法是將attributes作為URL的參數存下來，但這樣可能會有secruity等issue，因此FlashMap幫助網站在重定向時，儲存想要的參數至Target URL
+
+## FlashMapManager.java
+為一個interface，作用為儲存和查找對應的FlashMap
