@@ -22,13 +22,14 @@
 19. form
     1. package-info.java
     2. AbstractFormTag.java
-    3. FormTag.java
-    4. AbstractHtmlElementTag.java
-    5. AbstractHtmlInputElementTag.java
-    6. TagWriter.java
-    7. ValueFormatter.java
-    8. SelectedValueComparator.java
-    9. TagIdGenerator.java
+    3. FormTag.java 
+    4. AbstractDataBoundFormElementTag.java
+    5. AbstractHtmlElementTag.java (Done)
+    6. AbstractHtmlInputElementTag.java
+    7. TagWriter.java
+    8. ValueFormatter.java
+    9. SelectedValueComparator.java
+    10. TagIdGenerator.java
 
 ## This Folder
 Spring provides a set of custom JSP tags that can be used to access Spring-specific features from 
@@ -98,22 +99,57 @@ expression at runtime and the result can be used in subsequent process.
 ## Param
 
 ## MessageTag
-`<spring:message>`
+`<spring:message>` is a custom tag provided by the Spring Framework that allows you to easily access and display messages from message resource bundles. Message resource bundles are typically used to store application messages and other text strings that need to be internationalized or localized.
+
+Here's a brief overview of how `<spring:message>` works:
+
+*   The tag takes a `code` attribute that specifies the message code to look up in the message resource bundle.
+*   The tag can also take additional attributes to customize the behavior of the tag, such as a `var` attribute to store the message in a variable, a `text` attribute to specify a default message if the code is not found, and so on.
+*   The tag evaluates the message code using the `MessageSource` configured in the Spring application context.
+*   The `MessageSource` looks up the message code in the configured message resource bundles (typically properties files), using the current `Locale` to select the appropriate bundle.
+*   If the message is found, the tag displays it; otherwise, it falls back to the default message specified by the text attribute, or an empty string if no default message is specified.
 
 ## ThemeTag
-`<spring:theme>`
+`<spring:theme>` is a custom tag provided by the Spring Framework that allows you to easily apply theme-specific styles to your web pages. A theme is a collection of related resources such as CSS stylesheets, images, and other resources that define the look and feel of your web application.
+
+Here's a brief overview of how `<spring:theme>` works:
+
+*   The tag takes a `code` attribute that specifies the name of the theme to apply. Themes are typically defined in configuration files, such as XML or properties files.
+*   The tag can also take additional attributes to specify the resource type (type), resource name (name), and other parameters needed to retrieve the appropriate theme resources.
+*   The tag generates HTML code that includes links to the specified theme resources, such as CSS stylesheets and images.
+*   The generated HTML code can be included in your JSP pages to apply the specified theme to the page.
 
 ## TransformTag
-`<spring:transform>`
+`<spring:transform>` is a custom tag provided by the Spring Framework that allows you to transform the output of other tags using a specified transformation script or expression language. This can be useful for customizing the output of other tags, such as formatting dates or numbers, or converting HTML markup to another format.
+*   The tag takes a `var` attribute that specifies a variable name to store the transformed output.
+*   The tag also takes a `script` or `expression` attribute that specifies the transformation to apply to the output.
+*   The tag delegates the rendering of its body content to another tag or JSP element, such as `<c:out>` or `<spring:message>`.
+*   After the body content is rendered, the tag applies the specified transformation script or expression to the output.
+*   The transformed output is stored in the specified variable for further processing or display.
+
+Using `<spring:transform>` can provide a powerful way to customize the output of your JSP pages by applying arbitrary transformations to the output of other tags. The tag supports a wide range of transformation options, including script-based transformations using various scripting languages, as well as expression-based transformations using SpEL (Spring Expression Language).
 
 ## UrlTag
-`<spring:url>`
+`<spring:url>` is a custom tag provided by the Spring Framework that allows you to generate URLs for various resources in your web application, such as controller actions, static resources, or other web pages. The tag provides a consistent way to generate URLs that are compatible with Spring's URL mapping and handling mechanisms.
+
+Here's a brief overview of how `<spring:url>` works:
+
+*   The tag takes a `value` attribute that specifies the target URL, using a Spring-specific syntax that includes placeholders for dynamic parts of the URL.
+*   The tag can also take additional attributes to customize the behavior of the tag, such as a `var` attribute to store the generated URL in a variable, or attributes to specify query parameters or fragment identifiers.
+*   The tag generates a URL based on the configured URL path prefix and suffix, and the target URL specified in the `value` attribute.
+*   The generated URL can be used as a hyperlink or other link within your JSP page, or can be stored in a variable for further processing or display.
 
 ## BindErrorsTag
-`<spring:hasBindErrors>`
+`<spring:hasBindErrors>` is a custom tag provided by the Spring Framework that allows you to check if there are any binding or validation errors associated with a specific form field. When using form binding and validation in Spring, you typically use the `<form:form>` and `<form:errors>` tags to display validation errors that occur during form submission. `<spring:hasBindErrors>` provides an alternative way to check for binding and validation errors, with some additional flexibility and control.
 
 ## BindTag
-`<spring:bind>`
+`<spring:bind>` is a custom tag provided by the Spring Framework that allows you to bind form fields to model attributes in your JSP pages. When using form binding in Spring, you typically use the `<form:form>` tag to generate an HTML form that includes form fields, and then use the `<form:input>` or `<form:select>` tags to generate form fields that are bound to specific model attributes. `<spring:bind>` provides an alternative way to bind form fields to model attributes, with some additional features and flexibility.
 
 ## NestedPathTag
-`<spring:nestedPath>`
+`<spring:nestedPath>` is a custom tag provided by the Spring Framework that allows you to specify a nested path for form binding in your JSP pages. When using form binding in Spring, you may need to bind form fields to properties of nested objects, and `<spring:nestedPath>` provides a way to specify the nested path in a concise and consistent way.
+
+Here's a brief overview of how `<spring:nestedPath>` works:
+
+*   The tag takes a `path` attribute that specifies the nested path to be used for form binding.
+*   The tag sets the specified nested path on the `HttpServletRequest` object, so that any form binding that occurs within the tag's body content will use the specified nested path.
+*   The tag also restores the original nested path after the tag's body content is rendered, so that subsequent form binding will use the original nested path.
