@@ -288,3 +288,60 @@ Example:
 ref: ****[SpringBoot系列——WebMvcConfigurer介绍](https://juejin.cn/post/6844903863640653832)****
 
 ref: ****[跨域问题与SpringBoot解决方案](https://juejin.cn/post/6844903862956982279)****
+
+
+## **WebMvcConfigurationSupport**
+
+This is the main class providing the configuration behind the MVC Java config. It is typically imported by adding `@EnableWebMvc` to an application `@Configuration` class. An alternative more advanced option is to extend directly from this class and override methods as necessary, remembering to add `@Configuration` to the subclass and @Bean to overridden `@Bean` methods.
+
+This class registers the following `HandlerMappings`:
+
+- `RequestMappingHandlerMapping` ordered at 0 for mapping requests to annotated controller methods.
+    - **requestMappingHandlerMapping**(@Qualifier("mvcContentNegotiationManager") ContentNegotiationManager contentNegotiationManager, @Qualifier("mvcConversionService") FormattingConversionService conversionService, @Qualifier("mvcResourceUrlProvider") ResourceUrlProvider resourceUrlProvider)
+    - By default, the `WebMvcConfigurationSupport` class provides a `RequestMappingHandlerMapping` instance that is configured with the standard behavior for Spring MVC. This includes supporting `@RequestMapping`, `@GetMapping`, `@PostMapping`, and other HTTP method mapping annotations, as well as support for URI templates, path variables, and more.
+- `HandlerMapping` ordered at 1 to map URL paths directly to view names.
+    - **viewControllerHandlerMapping**(@Qualifier("mvcConversionService") FormattingConversionService conversionService, @Qualifier("mvcResourceUrlProvider") ResourceUrlProvider resourceUrlProvider)
+    - By default, the `WebMvcConfigurationSupport` class provides a `viewControllerHandlerMapping()` instance that is configured with the standard behavior for Spring MVC. This includes support for mapping URLs to view names based on convention (e.g., "/about" maps to the "about" view), as well as the ability to customize the behavior of the handler mapping by overriding the `addViewControllers()` method.
+- `BeanNameUrlHandlerMapping` ordered at 2 to map URL paths to controller bean names.
+    - **beanNameHandlerMapping**(@Qualifier("mvcConversionService") FormattingConversionService conversionService, @Qualifier("mvcResourceUrlProvider") ResourceUrlProvider resourceUrlProvider)
+- `RouterFunctionMapping` ordered at 3 to map router functions.
+    - **routerFunctionMapping**(@Qualifier("mvcConversionService") FormattingConversionService conversionService,      @Qualifier("mvcResourceUrlProvider") ResourceUrlProvider resourceUrlProvider)
+- `HandlerMapping` ordered at `Integer.MAX_VALUE-1` to serve static resource requests.
+    - **resourceHandlerMapping**(@Qualifier("mvcContentNegotiationManager") ContentNegotiationManager contentNegotiationManager,      @Qualifier("mvcConversionService") FormattingConversionService conversionService, @Qualifier("mvcResourceUrlProvider") ResourceUrlProvider resourceUrlProvider)
+- `HandlerMapping` ordered at `Integer.MAX_VALUE` to forward requests to the default servlet.
+    - **defaultServletHandlerMapping**()
+
+Registers these `HandlerAdapters`:
+
+- `RequestMappingHandlerAdapter` for processing requests with annotated controller methods.
+    - **requestMappingHandlerAdapter**(@Qualifier("mvcContentNegotiationManager") ContentNegotiationManager contentNegotiationManager,      @Qualifier("mvcConversionService") FormattingConversionService conversionService, @Qualifier("mvcValidator") Validator validator)
+- `HttpRequestHandlerAdapter` for processing requests with `HttpRequestHandlers`.
+    - **httpRequestHandlerAdapter**()
+- `SimpleControllerHandlerAdapter` for processing requests with interface-based `Controllers`.
+    - **simpleControllerHandlerAdapter**()
+- `HandlerFunctionAdapter` for processing requests with router functions.
+
+Registers a `HandlerExceptionResolverComposite` with this chain of exception resolvers:
+
+- `ExceptionHandlerExceptionResolver` for handling exceptions through `ExceptionHandler` methods.
+- `ResponseStatusExceptionResolver` for exceptions annotated with `ResponseStatus`.
+- `DefaultHandlerExceptionResolver` for resolving known Spring exception types
+
+Registers an `AntPathMatcher` and a `UrlPathHelper` to be used by:
+
+- the `RequestMappingHandlerMapping`,
+- the `HandlerMapping` for ViewControllers
+- and the `HandlerMapping` for serving resources
+
+Note that those beans can be configured with a `PathMatchConfigurer`.
+
+Both the `RequestMappingHandlerAdapter` and the `ExceptionHandlerExceptionResolver` are configured with default instances of the following by default:
+
+- a `ContentNegotiationManager`
+- a `DefaultFormattingConversionService`
+- an `OptionalValidatorFactoryBean` if a JSR-303 implementation is available on the classpath
+- a range of `HttpMessageConverters` depending on the third-party libraries available on the classpath.
+
+## EnableWebMvc
+
+實現原理：實際上是導入了 `DelegatingWebMvcConfiguration` 配置類，等價於 `@Configuration` + 繼承該類
