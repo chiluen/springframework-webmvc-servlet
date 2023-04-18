@@ -74,6 +74,7 @@ ref: [WebMvcConfigurer](https://so.csdn.net/so/search?q=WebMvcConfigurer&spm=100
 - Interceptor
 - ViewResolver — 將邏輯視圖名解析為一個具體的視圖對象
 - MessageConverter
+
 Key methods（前三者最常用）:
 
 - `addInterceptors(InterceptorRegistry registry)`: 自定義攔截器，並指定攔截路徑。Allows developers to register custom interceptors to intercept HTTP requests and responses.
