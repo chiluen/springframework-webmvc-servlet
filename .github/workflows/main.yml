@@ -2,7 +2,7 @@ name: Update with Slack
 
 on:
   push:
-    branches: [ main ]
+    branches: [ slack_test ]
 
 jobs:
   build:
