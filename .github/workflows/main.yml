@@ -1,4 +1,4 @@
-name: CI
+name: Update with Slack
 
 on:
   push:
@@ -10,6 +10,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Run a test script
-        run: echo Hello from luen
+        
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: code-tracing
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_TITLE: Notification for code tracing update
+          SLACK_USERNAME: GITHUB_BOT
+          SLACK_WEBHOOK: ${{ secrets.SLACK_HOOK }}
