@@ -4,7 +4,7 @@ NTU-SED-2023
 
 Add the README file after tracing code
 
-## DIvision
+## Division
 
 * 李勝維: view/handler/i18n, total of 6631 loc
 * 胡皓雍: method folder of MVC, total of 6605 loc
