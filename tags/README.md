@@ -34,10 +34,22 @@
     12. TagWriter.java (139) 
     13. CheckboxesTag.java (23)
     14. CheckboxTag.java (45) 
-    15. ErrorsTag.java (91) (Done)
-    15. ValueFormatter.java
-    16. SelectedValueComparator.java
-    17. TagIdGenerator.java
+    15. ErrorsTag.java (91) 
+    16. HiddenInputTag.java (30)
+    17. InputTag.java (93)
+    18. LabelTag.java (57) 
+    19. OptionsTag.java (113) 
+    20. OptionTag.java (127) 
+    21. OptionWriter.java (120) 
+    22. PasswordInputTag.java (29)
+    23. RadioButtonsTag.java (8)
+    24. RadioButtonTag.java (15) 
+    25. SelectedValueComparator.java (118)
+    26. SelectTag.java (149) 
+    27. ValueFormatter.java (26)
+    28. TagIdGenerator.java (12)
+    29. TextareaTag.java (48) (Done)
+
 
 ## This Folder
 Spring provides a set of custom JSP tags that can be used to access Spring-specific features from 

@@ -85,7 +85,6 @@ public class ParamTag extends BodyTagSupport {
 		this.valueSet = true;
 	}
 
-
 	@Override
 	public int doEndTag() throws JspException {
 		Param param = new Param();
