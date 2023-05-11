@@ -2,7 +2,7 @@
 
 NTU-SED-2023
 
-Add the README file after tracing code
+Add the README file after tracing code.
 
 ## Division
 
