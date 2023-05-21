@@ -111,3 +111,39 @@ ref:
 
 ## FlashMapManager.java
 為一個interface，作用為儲存和查找對應的FlashMap
+
+## DispatcherServlet.java
+為spring-webmvc 中的核心，其運作方式請見下圖：
+![Sample Image](./serveletSample.png)
+
+底下將根據一個client發送一個request會通過的method進行解說：
+
+### Init dispatcherServelet
+- DispatcherServlet(): 使用HttpServeletBeam的init（透過super實現），會添加webApplicationContext進入到這個instance之中
+- onRefresh: 在init中會call initWebApplicationContext()，而這個function則會call onRefresh，代表每一次在init dispatcherservelet都會呼叫onRefresh
+- initStrategies(): onRefresh會call這一個method，此method為呼叫不同的initializer，如下所示
+    - initMultipartResolver (用於處理client上傳的文件 [ref_link](https://blog.csdn.net/weixin_45496190/article/details/104835779))
+    - initLocaleResolver
+    - initThemeResolver
+    - initHandlerMappings
+    - initHandlerAdapters
+    - initHandlerExceptionResolvers
+    - initRequestToViewNameTranslator
+    - initViewResolvers
+    - initFlashMapManager
+
+### Process request and render view
+- doService: 當有request進來時，以get為例，會先交給FrameworkServlet的doGet，接下來doGet會呼叫processRequest，而processRequest則會呼叫DispatcherServlet中的doService。而doService主要做的事情為設置一些request的屬性等，並將這一個request丟給"doDispatch"這個method進行處理
+- doDispatch: 為真正處理request的method，其做的事情列在下面：
+    - iterate Handlermapping所存放的handler，找出處理該request對應的handler execution chain (請見code 1057行)
+    - iterate Handleradapter，找出對應此execution chain的adapter（請見code 1064行）
+    - 執行execution chain
+        - 處理handler execution chain的prehandle部分（請見code 1076行）
+        - 處理handler execution chain的 handler部分（請見code 1081行）
+        - 處理handler execution chain的posthandle部分（請見code 1088行）
+    - 透過processDispatchResult將handler執行結束回傳的ModelAndView進行渲染（裡面有一個render函數）
+
+
+ref:
+[link](https://blog.csdn.net/m0_45406092/article/details/115423861)
+
