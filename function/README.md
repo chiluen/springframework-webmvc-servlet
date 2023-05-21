@@ -29,6 +29,34 @@ ref: [link](https://blog.csdn.net/qq_43605444/article/details/122148706)
 - SseBuilder: server side event，代表server自動傳送給client的資訊，可以想像成是某個網站對你的推播
 - Context: server回傳response時，同時也可能會渲染畫面，因此有'writeTo'這個function回傳ModelAndView，而該context就是ModelAndView所需的原料之一
 
+## ErrorHandlingServerResponse.java
+為一個abstract，implement ServerResponse。幫ServerResponse實現了error handling，包含回傳的ModelAndView和serverResponse的error handle
+** 一個abstract implement interface時，不需要全部methods都implement
+
+## AbstractServerResponse.java
+為一個abstract，extend from ErrorHandlingServerResponse（其實就是實踐ServerResponse）。
+
+底下為該class具體實踐ServerResponse的method（這個class只有實現ServerResponse部分的東西）：
+- writeTo: 把一段response的header, status, cookiews寫進回覆當中
+
+## AsyncServerResponse.java
+為一個interface創建一個async的serverresponse，會透過DefaultAsyncServerResponse創建一個response
+
+## DefaultAsyncServerResponse.java
+為一個class，繼承ErrorHandlingServerResponse並implementAsyncServerResponse。
+
+裡面包含methods for創建ServerResponse，並且同時使用block method處理async的狀況
+
+幾個重要的methods:
+- writeTo: 由於是async版本，因此會額外呼叫writeAsync去控管非同步問題
+- createDeferredResult: 根據async的狀況，創建一個response
+
+
+
+
+
+
+
 
 # *Under Support folder*
 
