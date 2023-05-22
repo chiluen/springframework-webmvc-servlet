@@ -105,6 +105,25 @@ ChatGPT上的解釋：
 - ofRequestProcessor: 處理request
 - ofResponseProcessor: 處理response
 
+## ResourceHandlerFunction.java
+為一個class， implement HandlerFunction。
+
+它透過springframework自定義的resource class，將此resource當作handler使用，並且也有handle method。
+
+將resource當作handler使用的範例可見code 56行
+
+
+## DefaultServerRequest.java
+為一個class，implement ServerRequest。
+
+其功能與ServerRequest相同，目的為將從client端送過來的request重新包裝成Server較好讀取的樣貌。
+
+其具體實現了ServerRequest應該包含什麼樣的東西，例如header, parameter, body等
+
+## DefaultServerRequestBuilder.java
+為一個class, implement ServerRequest的Builder。
+
+其負責的就是建造ServerRequest內部所需的資料，如body, header等東西
 
 
 
