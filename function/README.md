@@ -28,6 +28,7 @@ ref: [link](https://blog.csdn.net/qq_43605444/article/details/122148706)
 - BodyBuilder
 - SseBuilder: server side event，代表server自動傳送給client的資訊，可以想像成是某個網站對你的推播
 - Context: server回傳response時，同時也可能會渲染畫面，因此有'writeTo'這個function回傳ModelAndView，而該context就是ModelAndView所需的原料之一
+- DefaultServerResponseBuilder: 實際創立server response的builder
 
 ## ErrorHandlingServerResponse.java
 為一個abstract，implement ServerResponse。幫ServerResponse實現了error handling，包含回傳的ModelAndView和serverResponse的error handle
@@ -50,6 +51,68 @@ ref: [link](https://blog.csdn.net/qq_43605444/article/details/122148706)
 幾個重要的methods:
 - writeTo: 由於是async版本，因此會額外呼叫writeAsync去控管非同步問題
 - createDeferredResult: 根據async的狀況，創建一個response
+
+## DefaultServerResponseBuilder.java
+
+為一個class，implement ServerResponse.java中的BodyBuilder interface。其作用為將一個response的body建構出來，包含content, cookies, header等
+
+## SseServerResponse.java
+
+為一個class，implement AbstractServerResponse。
+
+sse的意思為server-sent-event，這概念為server主動通知client(瀏覽器)有新的資料，例如股市頁面等。這個功能與websocket相似，但websocket是client與server雙向，而sse則是server to client單向。
+
+此class定義了如何create一個response，其中包含底下幾個class
+- DefaultSseBuilder: 去實踐ServerResponse裡面的SseBuilder，為定義Sse的行為與資料，例如send, data等
+
+## EntityResponse.java
+
+為一個interface，implement ServerResponse。
+
+這個class與ServerResponse相似，但他回傳的東西會被封裝為一個entity，此entity可能是任何的type。舉個例子，若想從database retrieve data，就可以根據data的屬性包成一個entity，並且當作server的response回傳給client。（一般來說ServerResponse就只回傳一些基本的content和ModelAndView，不一定會回傳一些object）
+
+## DefaultEntityResponseBuilder.java
+
+為一個class，implement EntityResponse之中的Builder。
+
+這個Builder便是把資料封裝成一個entity，並且回傳給client
+
+其中重要的method or attributes:
+- this.entity: 將entity存於該attribute之中
+- DefaultEntityResponse: 這是一個private class，當builder build時，會回傳這個class，裡面會設定header以及entity等attributes
+
+## RenderingResponse.java
+
+為一個interface，implement ServerResponse。
+
+這是特別針對render的response，此response會封裝Model的attribute，以及header等等
+
+## DefaultRenderingResponseBuilder.java
+
+為一個class，implement RenderingResponse中的builder class。
+
+實際定義了如何將model透過build method包到response中，同時還會build與cookies, status相關的資訊
+
+## HandlerFilterFunction.java
+為一個interface，用來filter 'request'與'response'，可以對他們做pre-processing後，再送至對應的handler
+
+ChatGPT上的解釋：
+“The primary function of the HandlerFilterFunction is to intercept and modify the request and response objects. It provides a way to perform pre-processing or post-processing logic, such as authentication, authorization, request/response logging, or modifying the request/response headers.”
+
+根據該解釋，這個function並非用來filter handler function，而是pre/post-processed進入handler function的request/response
+
+底下為重要的function
+- ofRequestProcessor: 處理request
+- ofResponseProcessor: 處理response
+
+
+
+
+
+
+
+
+
 
 
 
