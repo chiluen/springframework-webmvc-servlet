@@ -8,6 +8,16 @@
 為一個class，routerfunction的目的為透過該function映射到不同的handler function，可以想像成這是一種不同的handler mapping的形式，是透過routerfunction進行mapping
 - route: 主要的function，可route到不同的handler function
 
+## RouterFunctionBuilder.java
+
+為一個class，implement RouterFunction中的builder。其中實現了當Request使用Get,Post等method時，如何route到特定的handler function
+
+## RouterFunctions.java
+為一個abstract class，裡面有多個不同種類的RouterFunction，如以下所示：
+- AbstractRouterFunction
+- DifferentComposedRouterFunction
+- ...
+
 ## ServerRequest.java
 為一個interface，hold by HandlerFunction，主要的作用為若有一個http request，會有這個ServerRequest去解析該request並傳送到server，裡面提供對http的head, body訪問的method。
 - body(Class<T> bodyType): 取得http request的body內容
@@ -126,6 +136,23 @@ ChatGPT上的解釋：
 其負責的就是建造ServerRequest內部所需的資料，如body, header等東西
 
 
+## RequestPredicate.java
+為一個interface，與routerfunction一同運作，可以判斷當前的request是否滿足一些特定條件（如透過Get的parameter去判斷），之後再將該條request喂到對應的routerfunction
+
+## RequestPredicates.java
+有不同的requestPredicate的種類，包含使用httpmethod or parameter，底下為範例：
+- HttpMethodPredicate
+- PathPatternPredicate
+- HeadersPredicate
+
+## ChangePathPatternParserVisitor.java
+implement RouterFunctions.Visitor，為處理path的parser的具體實現
+
+## PathResourceLookupFunction.java
+為一個class，擔任RouterFunctions中解析router path的角色
+
+## ToStringVisitor.java
+為一個class，將router funcions透過string表現出來
 
 
 
