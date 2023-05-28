@@ -1,0 +1,19 @@
+# mvc folder
+
+## reading order
+1. Controller.java (10)
+2. AbstractController.java (49)
+3. LastModified.java (6)
+4. HttpRequestHandlerAdapter.java (28)
+5. SimpleControllerHandlerAdapter.java (26)
+6. AbstractUrlViewController.java (35)
+7. ParameterizableViewController.java (100)
+8. ServletForwardingController.java (58)
+9. ServletWrappingController.java (88)
+10. UrlFilenameViewController.java (49)
+11. WebContentInterceptor.java (142)
+12. annotation/ModelAndViewResolver.java (11)
+13. annotation/ResponseStatusExceptionResolver.java (69)
+14. support/DefaultHandlerExceptionResolver.java (206)
+15. support/RedirectAttributes.java (19)
+16. support/RedirectAttributesModelMap.java (86)
